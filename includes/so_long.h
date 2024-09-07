@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:02:21 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/06 19:42:28 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/07 21:54:11 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,21 @@ typedef struct elements
 
 typedef struct s_vars
 {
-	void	*mlx;
-	void	*win;
+	void		*mlx;
+	void		*win;
 
-	void	*front;
-	void	*left;
-	void	*right;
-	void	*back;
+	void		*player;
 
-	void	*wall;
-	void	*floor;
-	void	*collectible;
-	void	*exit;
-	void	*toprint;
+	void		*wall;
+	void		*floor;
+	void		*collectible;
+	void		*exit;
+	void		*toprint;
 
-	int		img_width;
-	int		img_height;
+	int			img_width;
+	int			img_height;
+	int			col_width;
+	int			col_height;
 }	t_vars;
 typedef struct s_image_info
 {
@@ -82,9 +81,11 @@ typedef struct s_point
 
 typedef struct s_map
 {
-	char	**map;
-	int		length;
-	int		width;
+	char		**map;
+	int			length;
+	int			width;
+	int			count;
+	t_elements	*elems;
 }	t_map;
 
 typedef struct s_data
@@ -93,27 +94,30 @@ typedef struct s_data
 	t_map	*map;
 }	t_data;
 
-int		elems_on_the_line(t_list *map, t_elements *count_elems);
-t_list	*get_map(int fd);
+int		elems_on_the_line(char *line, t_elements *count_elems);
+char	**get_map(char *path);
 void	printmap(char **tab);
-t_map	*parse_the_map(t_list *map, t_elements *count_elems);
+int		parse_the_map(t_map *map, t_elements *count_elems);
 char	**convertmap_chain_in_tabtab(t_list *map);
 void	flood_fill(char **map, int row, int col);
 int		verif_flood(char **flooded);
 int		ft_strlen_2d(char **map);
 char	**array_strcpy(char **src);
 int		where_start_flood(char **map);
-t_map	*doing_all(int fd);
+t_map	*doing_all(char	*path);
 void	flood_fill_for_exit(char **map, int row, int col);
 int		verif_flood_for_exit(char **flooded);
-int		map_closed(t_list *map);
-int		player_movement(char **map, int direction);
+int		map_closed(char **map);
+int		player_movement(char **map, int direction, t_elements *elems);
 int		key_hook(int keycode, t_data *data);
 int		start_open_window(t_vars *vars);
 int		mlx_looping(t_data *data);
 int		launch_mlx(t_vars *vars, t_map *map);
 int		set_img(t_vars *data);
 int		draw_map(t_vars *vars, t_map *map);
-void	hook_movements(int keycode, char **map);
+void	hook_movements(int keycode, t_data *data);
+void	end_mlx(t_vars *vars);
+void	destroy_all_images(t_vars *data);
+void	free_all(t_vars *vars, t_map *map);
 
 #endif

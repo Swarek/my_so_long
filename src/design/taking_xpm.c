@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 19:37:31 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/06 21:12:02 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/07 17:29:50 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,41 @@
 // 			data->img.player, &(data->img.width), &(data->img.height));
 // }
 
-void	destroy_all_images(t_vars *data)
+void	destroy_all_images(t_vars *vars)
 {
-	if (data->wall)
-		mlx_destroy_image(data->mlx, data->wall);
-	if (data->floor)
-		mlx_destroy_image(data->mlx, data->floor);
-	if (data->front)
-		mlx_destroy_image(data->mlx, data->front);
+	if (vars->wall)
+		mlx_destroy_image(vars->mlx, vars->wall);
+	if (vars->floor)
+		mlx_destroy_image(vars->mlx, vars->floor);
+	if (vars->player)
+		mlx_destroy_image(vars->mlx, vars->player);
+	if (vars->collectible)
+		mlx_destroy_image(vars->mlx, vars->collectible);
+	if (vars->exit)
+		mlx_destroy_image(vars->mlx, vars->exit);
 }
 
-int	set_img(t_vars *data)
+int	set_img(t_vars *vars)
 {
-	data->wall = mlx_xpm_file_to_image(data->mlx, "./img/wall_texture.xpm",
-			&data->img_width, &data->img_height);
-	if (!data->wall)
-		return (destroy_all_images(data), 1);
-	data->floor = mlx_xpm_file_to_image(data->mlx, "./img/floor_texture.xpm",
-			&data->img_width, &data->img_height);
-	if (!data->floor)
-		return (destroy_all_images(data), 1);
-	data->front = mlx_xpm_file_to_image(data->mlx, "./img/front.xpm",
-			&data->img_width, &data->img_height);
-	if (!data->front)
-		return (destroy_all_images(data), 1);
+	vars->wall = mlx_xpm_file_to_image(vars->mlx, "./img/wall.xpm",
+			&vars->img_width, &vars->img_height);
+	if (!vars->wall)
+		return (destroy_all_images(vars), 1);
+	vars->floor = mlx_xpm_file_to_image(vars->mlx, "./img/floor.xpm",
+			&vars->img_width, &vars->img_height);
+	if (!vars->floor)
+		return (destroy_all_images(vars), 1);
+	vars->collectible = mlx_xpm_file_to_image(vars->mlx,
+			"./img/cold.xpm", &vars->img_width, &vars->img_height);
+	if (!vars->collectible)
+		return (destroy_all_images(vars), 1);
+	vars->exit = mlx_xpm_file_to_image(vars->mlx, "./img/exit.xpm",
+			&vars->img_width, &vars->img_height);
+	if (!vars->exit)
+		return (destroy_all_images(vars), 1);
+	vars->player = mlx_xpm_file_to_image(vars->mlx, "./img/cafard.xpm",
+			&vars->img_width, &vars->img_height);
+	if (!vars->player)
+		return (destroy_all_images(vars), 1);
 	return (0);
 }

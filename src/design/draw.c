@@ -6,13 +6,13 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 19:38:01 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/06 21:00:39 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/07 22:04:50 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	draw_player_with_transparency(t_vars *vars, int x_pos, int y_pos)
+void	draw_xpm_with_transparency(t_vars *vars, int x_pos, int y_pos)
 {
 	char			*data;
 	t_image_info	img;
@@ -22,7 +22,7 @@ void	draw_player_with_transparency(t_vars *vars, int x_pos, int y_pos)
 
 	offset_x = (64 - vars->img_width) / 2;
 	offset_y = (64 - vars->img_height) / 2;
-	data = mlx_get_data_addr(vars->front, &img.bpp,
+	data = mlx_get_data_addr(vars->toprint, &img.bpp,
 			&img.size_line, &img.endian);
 	point.y = 0;
 	while (point.y < vars->img_height)
@@ -38,6 +38,25 @@ void	draw_player_with_transparency(t_vars *vars, int x_pos, int y_pos)
 			point.x++;
 		}
 		point.y++;
+	}
+}
+
+void	to_print(t_vars *vars, t_map *map, int x, int y)
+{
+	if (map->map[y][x] == 'P')
+	{
+		vars->toprint = vars->player;
+		draw_xpm_with_transparency(vars, x * 64, y * 64);
+	}
+	else if (map->map[y][x] == 'C')
+	{
+		vars->toprint = vars->collectible;
+		draw_xpm_with_transparency(vars, x * 64, y * 64);
+	}
+	else if (map->map[y][x] == 'E' && map->elems->collectible == 0)
+	{
+		vars->toprint = vars->exit;
+		draw_xpm_with_transparency(vars, x * 64, y * 64);
 	}
 }
 
@@ -59,10 +78,9 @@ int	draw_map(t_vars *vars, t_map *map)
 				mlx_put_image_to_window(vars->mlx, vars->win,
 					vars->wall, x * 64, y * 64);
 			}
-			else if (map->map[y][x] == 'P')
-			{
-				draw_player_with_transparency(vars, x * 64, y * 64);
-			}
+			else if (map->map[y][x] == 'P' || map->map[y][x] == 'C'
+				|| map->map[y][x == 'E'])
+				to_print(vars, map, x, y);
 			x++;
 		}
 		y++;

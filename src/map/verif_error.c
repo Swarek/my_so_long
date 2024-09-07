@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:37:07 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/06 17:52:06 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/07 22:16:24 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,26 @@ int	first_end_ones(char *str)
 	return (0);
 }
 
-int	map_closed(t_list *map)
+int	map_closed(char **map)
 {
-	if (only_ones(map->content) == -1)
+	int	i;
+
+	i = 0;
+	if (only_ones(map[0]) == -1)
 		return (ft_error_msg("Map not closed"), -1);
-	while (map->next != NULL)
-	{
-		if (first_end_ones(map->content) == -1)
+	while (map[i] != NULL)
+		if (first_end_ones(map[i++]) == -1)
 			return (ft_error_msg("Map not closed"), -1);
-		map = map->next;
-	}
-	if (only_ones(map->content) == -1)
+	if (only_ones(map[i - 1]) == -1)
 		return (ft_error_msg("Map not closed"), -1);
 	return (0);
 }
 
-int	elems_on_the_line(t_list *map, t_elements *count_elems)
+int	elems_on_the_line(char *line, t_elements *count_elems)
 {
 	int		i;
-	char	*line;
 
 	i = 0;
-	line = (char *)map->content;
 	while (line[i] != '\0')
 	{
 		if (line[i] == '0')
@@ -74,30 +72,33 @@ int	elems_on_the_line(t_list *map, t_elements *count_elems)
 		else if (line[i] == 'P')
 			count_elems->starting_pos++;
 		else
-			return (-1);
+			return (0);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-t_map	*parse_the_map(t_list *map, t_elements *count_elems)
+int	parse_the_map(t_map *map, t_elements *count_elems)
 {
-	t_map	*data_map;
+	int	i;
 
-	data_map = ft_safe_malloc(sizeof(t_map));
-	data_map->length = ft_strlen(map->content);
-	data_map->width = 0;
-	while (map != NULL)
+	i = 0;
+	map->length = ft_strlen(map->map[0]);
+	if (map->length > 31)
+		return (ft_error_msg("Map too long\n"), 1);
+	while (map->map[i])
 	{
-		if (data_map->length != (int)ft_strlen(map->content))
-			return (ft_error_msg("Not rectangular / Too much newlines"), NULL);
-		if (elems_on_the_line(map, count_elems) == -1)
-			return (ft_error_msg("Not good count of elems"), NULL);
-		map = map->next;
-		data_map->width++;
+		if (map->length != (int)ft_strlen(map->map[i]))
+			return (ft_error_msg("Not rectangular / Too much newlines\n"), 1);
+		if (elems_on_the_line(map->map[i], count_elems))
+			return (ft_error_msg("Not good count of elems\n"), 1);
+		i++;
 	}
+	map->width = i;
+	if (map->width > 16)
+		return (ft_error_msg("Map too large\n"), 1);
 	if (count_elems->starting_pos != 1 || count_elems->map_exit != 1
 		|| count_elems->collectible == 0)
-		return (ft_printf("Problem elements count on map"), NULL);
-	return (data_map);
+		return (ft_printf("Problem elements count on map\n"), 1);
+	return (0);
 }

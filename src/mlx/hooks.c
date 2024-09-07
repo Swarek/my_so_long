@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 18:18:27 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/06 21:05:08 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/07 22:36:37 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,39 @@ int	key_hook(int keycode, t_data *data)
 	{
 		if (vars->win && vars->mlx)
 		{
-			mlx_loop_end(vars->mlx);
-			mlx_destroy_window(vars->mlx, vars->win);
-			vars->win = NULL;
+			free_all(vars, map);
+			exit(0);
 		}
 		else
 			return (ft_error_msg("Error: Window or mlx not initialized\n"), 1);
 	}
-	hook_movements(keycode, map->map);
+	hook_movements(keycode, data);
 	return (0);
 }
 
-void	hook_movements(int keycode, char **map)
+void	hook_movements(int keycode, t_data *data)
 {
+	int	movement;
+
+	movement = -1;
 	if (keycode == KEY_W || keycode == KEY_UP)
-		player_movement(map, TOP);
+		movement = player_movement(data->map->map, TOP, data->map->elems);
 	if (keycode == KEY_A || keycode == KEY_LEFT)
-		player_movement(map, LEFT);
+		movement = player_movement(data->map->map, LEFT, data->map->elems);
 	if (keycode == KEY_D || keycode == KEY_RIGHT)
-		player_movement(map, RIGHT);
+		movement = player_movement(data->map->map, RIGHT, data->map->elems);
 	if (keycode == KEY_S || keycode == KEY_DOWN)
-		player_movement(map, BOTTOM);
+		movement = player_movement(data->map->map, BOTTOM, data->map->elems);
+	if (movement == 1)
+	{
+		ft_printf("\n\n\n\n\n\n\n\n\n\n\nYou won !!!!!!!!!!!!!!!!\n");
+		ft_printf("Total Count : %d", data->map->count);
+		free_all(data->vars, data->map);
+		exit(1);
+	}
+	else if (movement == 0)
+	{
+		data->map->count++;
+		ft_printf("Count : %d\n", data->map->count);
+	}
 }

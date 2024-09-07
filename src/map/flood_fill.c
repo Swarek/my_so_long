@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:28:37 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/06 18:36:19 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/07 22:21:19 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	where_start_flood(char **map)
 
 void	flood_fill(char **map, int row, int col)
 {
-	if(row < 0 || row > ft_strlen_2d(map) || col < 0 || col > (int)ft_strlen(map[0]))
+	if (row < 0 || row > ft_strlen_2d(map) || col < 0
+		|| col > (int)ft_strlen(map[0]))
 		return ;
 	if (map[row][col] == '0' || map[row][col] == 'C' || map[row][col] == 'P')
 	{
