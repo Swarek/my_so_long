@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:37:07 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/08 17:01:46 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 17:23:10 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	parse_the_map(t_map *map, t_elements *count_elems)
 	map->width = 0;
 	if (map->length > 27)
 		return (ft_error_msg("Map too long\n"));
-	while (map->map[map->width] != '\0')
+	while (map->map[map->width])
 	{
 		if (map->length != (int)ft_strlen(map->map[map->width]))
 			return (ft_error_msg("Not rectangular / New lines\n"));

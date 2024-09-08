@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:24 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/08 16:57:59 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 17:33:55 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	del_nl(char **map)
 	while (map[i])
 	{
 		len = ft_strlen(map[i]);
-		if (len > 0 && map[i][len - 1] == '\n')
+		if (len > 0 && map[i][len - 1] == '\n' && map[i + 1])
 			map[i][len - 1] = '\0';
 		i++;
 	}
