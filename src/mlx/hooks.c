@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 18:18:27 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/07 22:36:37 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 15:12:21 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	key_hook(int keycode, t_data *data)
 	map = data->map;
 	vars = data->vars;
 	if (!vars || !map || !map->map)
-		return (ft_error_msg("Error: Invalid pointers passed to key_hook\n"), 1);
+		return (ft_error_msg("Error: Invalid pointers passed to key_hook\n"));
 	if (keycode == KEY_ESC)
 	{
 		if (vars->win && vars->mlx)
@@ -29,7 +29,7 @@ int	key_hook(int keycode, t_data *data)
 			exit(0);
 		}
 		else
-			return (ft_error_msg("Error: Window or mlx not initialized\n"), 1);
+			return (ft_error_msg("Error: Window or mlx not initialized\n"));
 	}
 	hook_movements(keycode, data);
 	return (0);
@@ -50,7 +50,8 @@ void	hook_movements(int keycode, t_data *data)
 		movement = player_movement(data->map->map, BOTTOM, data->map->elems);
 	if (movement == 1)
 	{
-		ft_printf("\n\n\n\n\n\n\n\n\n\n\nYou won !!!!!!!!!!!!!!!!\n");
+		data->map->count++;
+		ft_printf("\n\n\n\n\n\n\n\n\n\n\nYou win !!!!!!!!!!!!!!!!\n");
 		ft_printf("Total Count : %d", data->map->count);
 		free_all(data->vars, data->map);
 		exit(1);

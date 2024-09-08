@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:24 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/07 22:19:11 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 16:57:59 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**get_map(char *path)
 		map[i++] = line;
 		line = get_next_line(fd);
 	}
-	return (map[i] = NULL, del_nl(map), map);
+	return (close (fd), map[i] = NULL, del_nl(map), map);
 }
 
 t_map	*doing_all(char	*path)
@@ -64,17 +64,19 @@ t_map	*doing_all(char	*path)
 	map = ft_safe_malloc(sizeof(t_map));
 	elements = ft_safe_malloc(sizeof(t_elements));
 	ft_memset(elements, 0, sizeof(t_elements));
+	ft_memset(map, 0, sizeof(t_map));
 	map->map = get_map(path);
-	ft_print_array(map->map);
-	if (!map)
+	map->elems = elements;
+	if (!map->map)
 		return (free_all(NULL, map), NULL);
-	if (parse_the_map(map, elements) == 1)
+	if (parse_the_map(map, elements) == -1)
 		return (free_all(NULL, map), NULL);
 	if (where_start_flood(map->map) == -1)
 		return (free_all(NULL, map), NULL);
 	if (map_closed(map->map) == -1)
 		return (free_all(NULL, map), NULL);
-	map->elems = elements;
+	if (map->elems->collectible == 0)
+		return (ft_error_msg("No collectible"), free_all(NULL, map), NULL);
 	map->count = 0;
 	return (map);
 }

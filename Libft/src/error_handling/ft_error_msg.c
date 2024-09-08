@@ -6,21 +6,23 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:32:54 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/04 12:33:01 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 14:10:22 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void ft_error_msg(const char *msg)
+int	ft_error_msg(const char *msg)
 {
     if (msg)
     {
         while (*msg)
         {
+			write(2, "\033[31m", 5);
             write(2, msg, 1);
+			write(2, "\033[0m", 4);
             msg++;
         }
-        write(2, "\n", 1);
     }
+	return (-1);
 }

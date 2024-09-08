@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 18:08:08 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/07 22:45:22 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 15:08:26 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,10 @@ int	start_open_window(t_vars *vars)
 {
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
-	{
-		ft_error_msg("Error: mlx_init failed\n");
-		return (1);
-	}
-	vars->win = mlx_new_window(vars->mlx, 1920, 1080, "SO_LONG");
+		return(ft_error_msg("Error: mlx_init failed\n"));
+	vars->win = mlx_new_window(vars->mlx, WIN_WIDTH, WIN_LENGTH, "SO_LONG");
 	if (!vars->win)
-	{
-		ft_error_msg("Error: mlx_new_window failed\n");
-		return (1);
-	}
+		return(ft_error_msg("Error: mlx_new_window failed\n"));
 	return (0);
 }
 
@@ -60,10 +54,7 @@ int	update(t_data *data)
 int	mlx_looping(t_data *data)
 {
 	if (!data->vars->win || !data->vars->mlx)
-	{
-		ft_error_msg("Error: mlx or window not initialized\n");
-		return (1);
-	}
+		return (ft_error_msg("Error: mlx or window not initialized\n"));
 	mlx_key_hook(data->vars->win, key_hook, data);
 	mlx_loop_hook(data->vars->mlx, update, data);
 	mlx_hook(data->vars->win, 17, 0, close_window, data);
@@ -78,11 +69,9 @@ int	launch_mlx(t_vars *vars, t_map *map)
 	data.map = map;
 	data.vars = vars;
 	if (start_open_window(vars) != 0)
-		return (ft_error_msg("Error: Failed to open window\n"), 1);
+		return (ft_error_msg("Error: Failed to open window\n"));
 	set_img(vars);
-	if (draw_map(vars, map) != 0)
-		return (ft_error_msg("Error: Failed to draw map\n"), 1);
 	if (mlx_looping(&data) != 0)
-		return (ft_error_msg("Error: mlx_loop failed\n"), 1);
+		return (ft_error_msg("Error: mlx_loop failed\n"));
 	return (0);
 }

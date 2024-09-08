@@ -6,7 +6,7 @@
 /*   By: mblanc <mblanc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:02:21 by mblanc            #+#    #+#             */
-/*   Updated: 2024/09/07 21:54:11 by mblanc           ###   ########.fr       */
+/*   Updated: 2024/09/08 15:59:11 by mblanc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@
 # define KEY_DOWN		65364
 # define KEY_RIGHT		65363
 # define KEY_LEFT		65361
+# define WIN_WIDTH		1920
+# define WIN_LENGTH		1080
 
 typedef struct elements
 {
-	int	empty;
-	int	wall;
 	int	collectible;
 	int	map_exit;
 	int	starting_pos;
@@ -62,8 +62,6 @@ typedef struct s_vars
 
 	int			img_width;
 	int			img_height;
-	int			col_width;
-	int			col_height;
 }	t_vars;
 typedef struct s_image_info
 {
@@ -99,7 +97,7 @@ char	**get_map(char *path);
 void	printmap(char **tab);
 int		parse_the_map(t_map *map, t_elements *count_elems);
 char	**convertmap_chain_in_tabtab(t_list *map);
-void	flood_fill(char **map, int row, int col);
+int		flood_fill(char **map, int row, int col);
 int		verif_flood(char **flooded);
 int		ft_strlen_2d(char **map);
 char	**array_strcpy(char **src);
@@ -118,6 +116,6 @@ int		draw_map(t_vars *vars, t_map *map);
 void	hook_movements(int keycode, t_data *data);
 void	end_mlx(t_vars *vars);
 void	destroy_all_images(t_vars *data);
-void	free_all(t_vars *vars, t_map *map);
+int		free_all(t_vars *vars, t_map *map);
 
 #endif
